@@ -1,18 +1,18 @@
 openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Team API
-  description: Team api 
+  title: Pets API
+  description: Pets api 
   x-sla:
     $ref: ./plans.yaml
 security:
   - BearerAuth: []
 paths:
-  /api/v1/teams:
-    x-router-controller: teamsController
+  /api/v1/ict_statss:
+    x-router-controller: petsController
     get:
-      description: Returns all teams
-      operationId: getTeams
+      description: Returns all ict_statss
+      operationId: getIct_statss
       responses:
         200:
           description: Team list
@@ -21,97 +21,33 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/team'
+                  $ref: '#/components/schemas/ict_stats'
         default:
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    post:
-      description: Creates a new team
-      operationId: addTeam
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be created
-        required: true
-      responses:
-        201:
-          description: Team
-        default:
-            description: Unexpected error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/error'
-                  
-  /api/v1/teams/{id}:
-    x-router-controller: teamsController
+    
+  /api/v1/ict_statss/{year}:
+    x-router-controller: petsController
     get:
-      description: Returns a single team by its id
+      description: Returns a single team by its year
       operationId: findByid
       parameters:
         - required: true
-          name: id
-          description: id of the team to fetch
+          name: year
+          description: year of the team to fetch
           in: path
           schema:
             type: number
       responses:
         200:
-          description: Team found by id
+          description: Team found by year
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/team'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    put:
-      description: Update a team based on its id
-      operationId: updateTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to update
-          in: path
-          schema:
-            type: number
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/team'
-        description: Team to be updated
-        required: true
-      responses:
-        '204':
-          description: Team updated
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error'
-    delete:
-      description: Deletes a single team based on its id
-      operationId: deleteTeam
-      parameters:
-        - required: true
-          name: id
-          description: id of the team to delete
-          in: path
-          schema:
-            type: number
-      responses:
-        '204':
-          description: Team deleted
+                $ref: '#/components/schemas/ict_stats'
         default:
           description: Unexpected error
           content:
@@ -126,25 +62,21 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    team:
+    ict_stats:
         type: object
         required:
-          - id
+          - year
         properties:
-          id:
+          territory:
+            type: string
+          year:
             type: number
-          name:
-            type: string
-          code:
-            type: string
-          country:
-            type: string
-          founded:
+          ict_manufacturing_industry:
             type: number
-          national:
-            type: boolean
-          logo:
-            type: string
+          wholesale_trade:
+            type: number
+          edition_of_computer_program:
+            type: number
     error:
       type: object
       required:
